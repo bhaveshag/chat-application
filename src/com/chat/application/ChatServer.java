@@ -1,32 +1,44 @@
 package com.chat.application;
 
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.PrintStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class ChatServer {
-	public ChatServer(int port) throws IOException {
+	public ChatServer(int port) {
+		try {
+			ServerSocket server = new ServerSocket(port);
 
-		ServerSocket server = new ServerSocket(port);
-		while (true) {
-			String name; 
-			Socket client = server.accept();
-			DataInputStream in = new DataInputStream(client.getInputStream());
-			PrintStream out = new PrintStream(client.getOutputStream());
-			out.println("enter your name : ");
-			name = in.readLine();
-			System.out.println("Accepted from " + client.getInetAddress());
-			ChatHandler c = new ChatHandler(client, name);
-			c.start();
-			server.close();
-		}
+			while (true) {
+				Socket client = server.accept();
+				BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+				PrintWriter out = new PrintWriter(client.getOutputStream());
+				out.println("enter your name : ");
+				String name = in.readLine();
+				out.println("Accepted from " + client.getInetAddress());
+				ChatHandler c = new ChatHandler(client, name);
+				c.start();
+				server.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
 	}
 
-	public static void main(String args[]) throws IOException {
-		if (args.length != 1)
-			throw new RuntimeException("Syntax: ChatServer <port>");
-		new ChatServer(Integer.parseInt(args[0]));
+	public static void main(String args[]) {
+		String port = null;
+		if (args.length == 1)
+			port = args[0];
+		else {
+			System.out.println("Enter port to run server");
+			Scanner sn = new Scanner(System.in);
+			port = sn.nextLine();
+			sn.close();
+		}
+		new ChatServer(Integer.parseInt(port));
+		System.out.println("Chat server started!!!");
 	}
 }

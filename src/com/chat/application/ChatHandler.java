@@ -13,21 +13,20 @@ public class ChatHandler extends Thread {
 	protected Socket s;
 	protected DataInputStream i;
 	protected DataOutputStream o;
+	protected static Vector<ChatHandler> handlers = new Vector<ChatHandler>();
 
-	// making strems b/w public String name;
+	// making streams b/w public String name;
 	public ChatHandler(Socket s, String name) throws IOException {
 		this.s = s;
 		this.setName(name);
 		i = new DataInputStream(new BufferedInputStream(s.getInputStream()));
 		o = new DataOutputStream(new BufferedOutputStream(s.getOutputStream()));
 	}
-
-	protected static Vector handlers = new Vector();
-
+	
 	public void run() {
 		// String name = s.getInetAddress().toString (); 
 		try {
-		Enumeration e = handlers.elements();
+		Enumeration<ChatHandler> e = handlers.elements();
 		while (e.hasMoreElements()) {
 			ChatHandler c = (ChatHandler) e.nextElement();
 			String n = new String(c.getName() + " is also online.");
@@ -70,9 +69,10 @@ public class ChatHandler extends Thread {
 	}
 	}
 
+	@SuppressWarnings("deprecation")
 	protected static void broadcast(String message) {
 		synchronized (handlers) {
-			Enumeration e = handlers.elements();
+			Enumeration<ChatHandler> e = handlers.elements();
 			while (e.hasMoreElements()) {
 				ChatHandler c = (ChatHandler) e.nextElement();
 				try {
@@ -87,9 +87,10 @@ public class ChatHandler extends Thread {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	protected void unicast(String name) {
 		synchronized (handlers) {
-			Enumeration e = handlers.elements();
+			Enumeration<ChatHandler> e = handlers.elements();
 			while (e.hasMoreElements()) {
 				ChatHandler c = (ChatHandler) e.nextElement();
 				try {

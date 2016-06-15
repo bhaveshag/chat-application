@@ -5,12 +5,17 @@ import java.io.*;
 import java.awt.*;
 
 public class ChatClient extends Frame implements Runnable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected DataInputStream i;
 	protected DataOutputStream o;
 	protected TextArea output;
 	protected TextField input;
 	protected Thread listener;
 
+	@SuppressWarnings("deprecation")
 	public ChatClient(String title, InputStream i, OutputStream o) {
 		super(title);
 		this.i = new DataInputStream(new BufferedInputStream(i));
@@ -26,6 +31,7 @@ public class ChatClient extends Frame implements Runnable {
 		listener.start();
 	}
 
+	@SuppressWarnings("deprecation")
 	public void run() {
 		try {
 			while (true) {
@@ -46,6 +52,7 @@ public class ChatClient extends Frame implements Runnable {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	public boolean handleEvent(Event e) {
 		if ((e.target == input) && (e.id == Event.ACTION_EVENT)) {
 			try {
@@ -66,6 +73,7 @@ public class ChatClient extends Frame implements Runnable {
 		return super.handleEvent(e);
 	}
 
+	@SuppressWarnings({ "deprecation", "resource" })
 	public static void main(String args[]) throws IOException {
 		
 		if (args.length != 2)

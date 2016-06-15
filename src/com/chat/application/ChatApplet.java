@@ -36,12 +36,14 @@ public class ChatApplet extends Applet implements Runnable {
 		listener.start();
 	}
 
+	@SuppressWarnings("deprecation")
 	public void stop() {
 		if (listener != null)
 			listener.stop();
 		listener = null;
 	}
 
+	@SuppressWarnings({ "deprecation", "resource" })
 	public void run() {
 		try {
 			String host = getParameter("host");
@@ -65,6 +67,7 @@ public class ChatApplet extends Applet implements Runnable {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	public void execute() {
 		try {
 			while (true) {
@@ -87,6 +90,7 @@ public class ChatApplet extends Applet implements Runnable {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	public boolean handleEvent(Event e) {
 
 		if ((e.target == input) && (e.id == Event.ACTION_EVENT)) {
